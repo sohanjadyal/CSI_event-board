@@ -176,7 +176,7 @@ We welcome and appreciate contributions from all students and community members!
    - Test manually in your browser: `npm start`
 5. **Commit Your Work:** Write clear, descriptive commit messages:
    ```bash
-   git commit -m "fix: improve validation handling for event inputs"
+   git commit -m "fix: resolve issue description"
    ```
 6. **Push to Your Fork:**
    ```bash
