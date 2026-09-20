@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "Hackathon 2025 Opening Ceremony",
+    "date": "2025-11-10",
+    "location": "Auditorium",
+    "description": "Kickoff event for the annual CSI SPIT hackathon with keynotes and team formations.",
+    "tags": [
+      "Tech",
+      "Hackathon"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Web3 & Blockchain Workshop",
+    "date": "2025-08-15",
+    "location": "Lab 3",
+    "description": "Hands-on session covering smart contracts, Ethereum basics, and decentralized apps.",
+    "tags": [
+      "tech",
+      "Workshop"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Open Source 101",
+    "date": "2025-09-01",
+    "location": "Seminar Hall",
+    "description": "Introduction to Git, GitHub, and contributing to open-source software.",
+    "tags": [
+      "OpenSource",
+      "Tech"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Cultural Night & Talent Showcase",
+    "date": "2025-12-05",
+    "location": "Quadrangle",
+    "description": "An evening of music, theater, and creative performances by student clubs.",
+    "tags": [
+      "Cultural",
+      "Music"
+    ]
+  }
+]

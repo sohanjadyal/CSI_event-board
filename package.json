@@ -1,0 +1,22 @@
+{
+  "name": "event-board",
+  "version": "1.0.0",
+  "description": "Campus event board application for tracking and sharing college fests, workshops, and hackathons.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/validator.test.js"
+  },
+  "keywords": [
+    "campus",
+    "events",
+    "express",
+    "source-start",
+    "csi-spit"
+  ],
+  "author": "CSI-SPIT",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
