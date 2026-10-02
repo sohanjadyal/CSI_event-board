@@ -146,6 +146,7 @@ label {
 }
 
 input[type="text"],
+input[type="password"],
 input[type="date"],
 textarea {
   width: 100%;
@@ -194,6 +195,27 @@ textarea:focus {
 }
 
 .search-box input {
+  flex: 1;
+}
+
+.admin-auth {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  max-width: 300px;
+}
+
+.admin-auth.visible {
+  display: flex;
+}
+
+.admin-auth label {
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.admin-auth input {
   flex: 1;
 }
 
@@ -273,6 +295,8 @@ textarea:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .tag-badge {
@@ -281,4 +305,14 @@ textarea:focus {
   color: #9ca3af;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
 }
