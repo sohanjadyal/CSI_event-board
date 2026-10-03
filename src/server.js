@@ -41,6 +41,14 @@ app.get("/events", (req, res) => {
   res.json(events);
 });
 
+function checkAdmin(req, res, next) {
+  const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  if (!process.env.ADMIN_TOKEN || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+}
+
 // POST create a new event
 app.post("/events", (req, res) => {
   const validation = validateEvent(req.body);
@@ -63,12 +71,52 @@ app.post("/events", (req, res) => {
   res.status(201).json(newEvent);
 });
 
-// DELETE an event by ID
-app.delete("/events/:id", (req, res) => {
+// PUT edit an event by ID
+app.put("/events/:id", checkAdmin, (req, res) => {
   const id = parseInt(req.params.id, 10);
+  const eventIndex = events.findIndex(e => e.id === id);
+  if (eventIndex === -1) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  const validation = validateEvent(req.body);
+  if (!validation.valid) {
+    return res.status(400).json({ error: validation.error });
+  }
+
+  const updatedEvent = {
+    id: id,
+    title: req.body.title,
+    date: req.body.date,
+    location: req.body.location,
+    description: req.body.description || "",
+    tags: Array.isArray(req.body.tags) ? req.body.tags : []
+  };
+
+  events[eventIndex] = updatedEvent;
+  saveEvents();
+  res.status(200).json(updatedEvent);
+});
+
+// DELETE an event by ID
+app.delete("/events/:id", checkAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const eventExists = events.some(e => e.id === id);
+  if (!eventExists) {
+    return res.status(404).json({ error: "Not found" });
+  }
   events = events.filter(e => e.id !== id);
   saveEvents();
   res.status(200).json({ ok: true });
+});
+
+// POST verify admin token
+app.post("/verify", (req, res) => {
+  const token = req.body.token;
+  if (!process.env.ADMIN_TOKEN || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ valid: false });
+  }
+  res.status(200).json({ valid: true });
 });
 
 if (require.main === module) {

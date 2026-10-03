@@ -42,5 +42,18 @@
       "Cultural",
       "Music"
     ]
+  },
+  {
+    "id": 5,
+    "title": "FAHHH",
+    "date": "2026-10-31",
+    "location": "Online",
+    "description": "hi",
+    "tags": [
+      "test",
+      "FAHHH",
+      "FAHHHHHH",
+      "AV"
+    ]
   }
 ]

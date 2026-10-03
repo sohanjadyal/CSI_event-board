@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "node --test tests/validator.test.js"
+    "test": "node --test"
   },
   "keywords": [
     "campus",

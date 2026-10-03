@@ -13,7 +13,7 @@
   <div class="app-container">
     <header class="header">
       <div class="header-content">
-        <h1>Campus Event Board</h1>
+        <h1 id="main-title">Campus Event Board</h1>
         <p>Discover workshops, hackathons, and student club fests on campus</p>
       </div>
       <button id="toggle-form-btn" class="btn btn-primary">+ Add New Event</button>
@@ -21,8 +21,9 @@
 
     <section id="form-container" class="form-container hidden">
       <div class="card form-card">
-        <h2>Submit an Event</h2>
+        <h2 id="form-title">Submit an Event</h2>
         <form id="event-form">
+          <input type="hidden" id="event-id">
           <div class="form-group">
             <label for="event-title">Event Title *</label>
             <input type="text" id="event-title" placeholder="e.g. AI & Robotics Seminar" required>
@@ -47,7 +48,7 @@
           </div>
           <div class="form-actions">
             <button type="button" id="cancel-form-btn" class="btn btn-secondary">Cancel</button>
-            <button type="submit" class="btn btn-primary">Create Event</button>
+            <button type="submit" id="submit-form-btn" class="btn btn-primary">Create Event</button>
           </div>
         </form>
       </div>
@@ -58,6 +59,11 @@
         <label for="tag-filter">Filter by Tag:</label>
         <input type="text" id="tag-filter" placeholder="e.g. Tech, Workshop, Hackathon">
         <button id="clear-filter-btn" class="btn btn-outline">Clear</button>
+      </div>
+      <div class="admin-auth">
+        <label for="admin-token">Admin Token:</label>
+        <input type="password" id="admin-token" placeholder="Enter token">
+        <button id="admin-login-btn" class="btn btn-outline" style="padding: 0.5rem 1rem;">Login</button>
       </div>
       <div class="event-count" id="event-count">Loading events...</div>
     </div>
