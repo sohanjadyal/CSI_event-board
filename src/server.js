@@ -38,7 +38,11 @@ loadEvents();
 
 // GET all events
 app.get("/events", (req, res) => {
-  res.json(events);
+  const sortedEvents = [...events].sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+
+  res.json(sortedEvents);
 });
 
 function checkAdmin(req, res, next) {
