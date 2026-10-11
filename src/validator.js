@@ -11,8 +11,24 @@ function validateEvent(event) {
     return { valid: false, error: "Title is required" };
   }
 
-  if (!event.date || isNaN(Date.parse(event.date))) {
+  // Check the required YYYY-MM-DD format
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (typeof event.date !== "string" || !datePattern.test(event.date)) {
     return { valid: false, error: "Valid date (YYYY-MM-DD) is required" };
+  }
+
+  // Check whether the date exists on the calendar
+  const parsedDate = new Date(`${event.date}T00:00:00.000Z`);
+  if (
+    event.date.startsWith("0000") ||
+    Number.isNaN(parsedDate.getTime()) ||
+    parsedDate.toISOString().slice(0, 10) !== event.date
+  ) {
+    return {
+      valid: false,
+      error: "Valid date (YYYY-MM-DD) is required"
+    };
   }
 
   if (!event.location || typeof event.location !== "string" || event.location.trim().length === 0) {
