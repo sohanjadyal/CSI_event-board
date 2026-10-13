@@ -57,6 +57,28 @@ test('POST /events creates a new event', async () => {
   assert.strictEqual(data.title, "Test Event");
 });
 
+// POST with non-string date (regression test for issue #19)
+test('POST /events rejects non-string date with 400 and keeps GET /events working', async () => {
+  const res = await fetch(`${baseUrl}/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: "Number date",
+      date: 2026,
+      location: "Lab 2"
+    })
+  });
+  assert.strictEqual(res.status, 400);
+  const data = await res.json();
+  assert.strictEqual(data.error, "Valid date (YYYY-MM-DD) is required");
+
+  // Verify GET /events still works and does not return 500
+  const getRes = await fetch(`${baseUrl}/events`);
+  assert.strictEqual(getRes.status, 200);
+  const events = await getRes.json();
+  assert.ok(Array.isArray(events));
+});
+
 // PUT without an admin token
 test('PUT /events/:id without token returns 401', async () => {
   const res = await fetch(`${baseUrl}/events/1`, {

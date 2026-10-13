@@ -90,4 +90,16 @@ describe("Event Validator", () => {
     });
     assert.strictEqual(result.valid, true);
   });
+
+  test("rejects non-string date types (issue #19)", () => {
+    for (const badDate of [2026, ["2026-10-20"], { year: 2026 }, true, false, null]) {
+      const result = validateEvent({
+        title: "Test Event",
+        date: badDate,
+        location: "Mumbai"
+      });
+      assert.strictEqual(result.valid, false);
+      assert.strictEqual(result.error, "Valid date (YYYY-MM-DD) is required");
+    }
+  });
 });
