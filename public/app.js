@@ -107,6 +107,16 @@ function filterByTag(tag) {
   renderCards(filtered);
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function renderCards(eventsToRender) {
   eventCount.textContent = `Showing ${eventsToRender.length} event${eventsToRender.length === 1 ? '' : 's'}`;
 
@@ -117,24 +127,25 @@ function renderCards(eventsToRender) {
 
   eventsGrid.innerHTML = eventsToRender.map(event => {
     const tagsHtml = (event.tags || [])
-      .map(tag => `<span class="tag-badge">#${tag}</span>`)
+      .map(tag => `<span class="tag-badge">#${escapeHtml(tag)}</span>`)
       .join("");
 
+    const safeId = Number(event.id);
+
     return `
-      <article class="card event-card" data-id="${event.id}">
+      <article class="card event-card" data-id="${escapeHtml(event.id)}">
         <div class="card-top">
-          <span class="event-date-badge">${event.date}</span>
-          <h3 class="card-title">${event.title}</h3>
-          <div class="card-location">📍 ${event.location}</div>
-          <p class="card-desc">${event.description || ""}</p>
-        </div>
+          <span class="event-date-badge">${escapeHtml(event.date)}</span>
+          <h3 class="card-title">${escapeHtml(event.title)}</h3>
+          <div class="card-location">📍 ${escapeHtml(event.location)}</div>
+          <p class="card-desc">${escapeHtml(event.description || "")}</p>
         </div>
         <div class="card-footer">
           <div class="tags-list">${tagsHtml}</div>
           ${adminToken ? `
             <div class="card-actions">
-              <button class="btn btn-primary edit-btn" onclick="openEditEvent(${event.id})">Edit</button>
-              <button class="btn btn-danger delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
+              <button class="btn btn-primary edit-btn" onclick="openEditEvent(${safeId})">Edit</button>
+              <button class="btn btn-danger delete-btn" onclick="deleteEvent(${safeId})">Delete</button>
             </div>
           ` : ""}
         </div>
