@@ -52,4 +52,42 @@ describe("Event Validator", () => {
     const result = validateEvent(null);
     assert.strictEqual(result.valid, false);
   });
+
+  // New date-validation regression tests
+
+  test("rejects dates outside YYYY-MM-DD format", () => {
+    const result = validateEvent({
+      title: "Test Event",
+      date: "10/20/2026",
+      location: "Mumbai"
+    });
+    assert.strictEqual(result.valid, false);
+  });
+
+  test("rejects impossible calendar dates", () => {
+    const result = validateEvent({
+      title: "Test Event",
+      date: "2026-02-31",
+      location: "Mumbai"
+    });
+    assert.strictEqual(result.valid, false);
+  });
+
+  test("accepts valid YYYY-MM-DD dates", () => {
+    const result = validateEvent({
+      title: "Test Event",
+      date: "2026-10-20",
+      location: "Mumbai"
+    });
+    assert.strictEqual(result.valid, true);
+  });
+
+  test("accepts valid leap-year dates", () => {
+    const result = validateEvent({
+      title: "Test Event",
+      date: "2024-02-29",
+      location: "Mumbai"
+    });
+    assert.strictEqual(result.valid, true);
+  });
 });
