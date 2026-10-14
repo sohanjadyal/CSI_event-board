@@ -89,7 +89,11 @@ app.post("/events", (req, res) => {
 
 // PUT edit an event by ID
 app.put("/events/:id", checkAdmin, (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  if (!/^\d+$/.test(req.params.id)) {
+    return res.status(400).json({ error: "Invalid event ID" });
+  }
+
+  const id = Number(req.params.id);
   const eventIndex = events.findIndex(e => e.id === id);
   if (eventIndex === -1) {
     return res.status(404).json({ error: "Not found" });
@@ -129,7 +133,11 @@ app.put("/events/:id", checkAdmin, (req, res) => {
 
 // DELETE an event by ID
 app.delete("/events/:id", checkAdmin, (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  if (!/^\d+$/.test(req.params.id)) {
+    return res.status(400).json({ error: "Invalid event ID" });
+  }
+
+  const id = Number(req.params.id);
   const eventExists = events.some(e => e.id === id);
   if (!eventExists) {
     return res.status(404).json({ error: "Not found" });

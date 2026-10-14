@@ -252,3 +252,70 @@ test('DELETE /events/:id returns 500 when saving fails', async () => {
   const after = await (await fetch(`${baseUrl}/events`)).json();
   assert.deepStrictEqual(after, before);
 });
+
+// PUT with a malformed event ID
+test('PUT /events/:id rejects malformed ID without modifying event', async () => {
+  const postRes = await fetch(`${baseUrl}/events`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: 'Original Event',
+      date: '2026-11-01',
+      location: 'Mumbai'
+    })
+  });
+
+  const event = await postRes.json();
+
+  const res = await fetch(`${baseUrl}/events/${event.id}hello`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer test-token'
+    },
+    body: JSON.stringify({
+      title: 'Modified Event',
+      date: '2026-11-01',
+      location: 'Pune'
+    })
+  });
+
+  assert.strictEqual(res.status, 400);
+
+  const events = await (await fetch(`${baseUrl}/events`)).json();
+  const unchangedEvent = events.find(e => e.id === event.id);
+
+  assert.ok(unchangedEvent);
+  assert.strictEqual(unchangedEvent.title, 'Original Event');
+  assert.strictEqual(unchangedEvent.location, 'Mumbai');
+});
+
+// DELETE with a malformed event ID
+test('DELETE /events/:id rejects malformed ID without deleting event', async () => {
+  const postRes = await fetch(`${baseUrl}/events`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: 'Event To Preserve',
+      date: '2026-11-02',
+      location: 'Mumbai'
+    })
+  });
+
+  const event = await postRes.json();
+
+  const res = await fetch(`${baseUrl}/events/${event.id}hello`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': 'Bearer test-token'
+    }
+  });
+
+  assert.strictEqual(res.status, 400);
+
+  const events = await (await fetch(`${baseUrl}/events`)).json();
+  const preservedEvent = events.find(e => e.id === event.id);
+
+  assert.ok(preservedEvent);
+  assert.strictEqual(preservedEvent.title, 'Event To Preserve');
+});
