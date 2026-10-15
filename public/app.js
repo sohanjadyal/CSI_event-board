@@ -229,6 +229,7 @@ async function handleCreateEvent(e) {
       } else {
         currentEvents.push(saved);
       }
+      currentEvents.sort((a, b) => a.date.localeCompare(b.date));
       renderCards(currentEvents);
       eventForm.reset();
       eventIdInput.value = "";
